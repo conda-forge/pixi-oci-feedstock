@@ -31,12 +31,14 @@ build:
       CARGO_PROFILE_RELEASE_STRIP: symbols
       CARGO_PROFILE_RELEASE_LTO: fat
     content:
-      # cc-rs >= 1.2 concatenates CFLAGS with CFLAGS_<target>, so the target flags would leak into
-      # the host builds of build-dependencies (ureq -> ring, liblzma) when cross-compiling.
       - if: build_platform != target_platform
         then:
+          # cc-rs >= 1.2 concatenates CFLAGS with CFLAGS_<target>, so the target flags would leak
+          # into the host builds of build-dependencies (ureq -> ring, liblzma).
           - export TARGET_CFLAGS="$CFLAGS" TARGET_CXXFLAGS="$CXXFLAGS"
           - unset CFLAGS CXXFLAGS
+          # let openssl-sys find the host-platform openssl via pkg-config
+          - export PKG_CONFIG_ALLOW_CROSS=1
       - export GLIBC_DEBIAN_FILE="$SRC_DIR/glibc-debs/libc6_${{ glibc_debian_version }}_amd64.deb:$SRC_DIR/glibc-debs/libc6_${{ glibc_debian_version }}_arm64.deb"
       - cargo auditable install --locked --no-track --features bundled-glibc --bins --root ${{ PREFIX }} --path .
       - cargo-bundle-licenses --format yaml --output ./THIRDPARTY.yml
