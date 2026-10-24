@@ -1,5 +1,5 @@
 context:
-  version: "0.1.0"
+  version: "0.1.1"
   # keep in sync with src/default_glibc.rs and the SHA-1s in build.rs
   glibc_debian_version: "2.41-12+deb13u4"
 
@@ -9,7 +9,7 @@ package:
 
 source:
   - url: https://github.com/pavelzw/pixi-oci/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: 20332a6a3de54eec53d0e7647881f742999692d21a463b13b14f987cd9d08fdf
+    sha256: bc499985e52d6c8c824b24f276996d3c16483347f5889aa2ba6279443edb7fb6
   # Debian libc6 packages embedded with the `bundled-glibc` feature, pinned by SHA-1 in build.rs
   - url: https://snapshot.debian.org/file/27904cc1b58dd79f0768ba6aa6dd993edc411b97
     sha256: 967aa62605721081c3eb2a17650611a792aa802d76a6511d1840242623d204c9
