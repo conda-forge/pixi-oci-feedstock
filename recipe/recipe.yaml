@@ -24,7 +24,7 @@ source:
     file_name: GLIBC_COPYRIGHT
 
 build:
-  number: 0
+  number: 1
   skip: win
   script:
     env:
@@ -55,7 +55,7 @@ requirements:
     - cargo-bundle-licenses
     - cargo-auditable
     - cmake
-    - pkg-config
+    - pkgconf
   host:
     - openssl
 
