@@ -24,7 +24,7 @@ source:
     file_name: GLIBC_COPYRIGHT
 
 build:
-  number: 0
+  number: 1
   skip: win
   script:
     env:
@@ -40,7 +40,8 @@ build:
           # let openssl-sys find the host-platform openssl via pkg-config
           - export PKG_CONFIG_ALLOW_CROSS=1
       - export GLIBC_DEBIAN_FILE="$SRC_DIR/glibc-debs/libc6_${{ glibc_debian_version }}_amd64.deb:$SRC_DIR/glibc-debs/libc6_${{ glibc_debian_version }}_arm64.deb"
-      - cargo auditable install --locked --no-track --features bundled-glibc --bins --root ${{ PREFIX }} --path .
+      # conda-forge builds use native-tls (OpenSSL on Linux, Security.framework on macOS), like pixi and rattler-build
+      - cargo auditable install --locked --no-track --no-default-features --features native-tls,bundled-glibc --bins --root ${{ PREFIX }} --path .
       - cargo-bundle-licenses --format yaml --output ./THIRDPARTY.yml
       - mkdir -p $PREFIX/share/zsh/site-functions $PREFIX/share/bash-completion/completions $PREFIX/share/fish/vendor_completions.d
       - $PREFIX/bin/pixi-oci completion zsh > $PREFIX/share/zsh/site-functions/_pixi-oci
